@@ -1,0 +1,62 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Gentilesse App</title>
+	{% bootstrap_css %}
+	<link href="{% static 'css/issue.css' %}" rel="stylesheet">
+	{% block css %}{% endblock %}
+	<script src="{% bootstrap_jquery_url %}"></script>
+	{% block js %}{% endblock %}
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Gentillesse App</a>
+        </div>
+        <div class="navbar-collapse collapse">
+			
+          <form class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form>
+          
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+		{% bootstrap_messages %}
+        {% block content %}{% endblock %}
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; KenH 2014</p>
+      </footer>
+    </div> <!-- /container -->
+    {% bootstrap_javascript %}
+	{% block js_end %}{% endblock %}
+  </body>
+</html>
