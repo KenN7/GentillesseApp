@@ -1,19 +1,24 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
+from datetime import date
 from tracker.models import *
 
 # Create your views here.
 
+@login_required
+def point_add(request, user_to, label, amount):
+    if user_to and amount:
+        user_by = User.objects.get(username=request.user)
+        point = EventPoint(by=user_by,to=user_to,label=label,date=date.today(),points=int(amount))
+        point.save()
+    else:
+        messages.error(request, 'Error adding points')
 
-def login(request):
 
-    c = {
-            }
-    return render(request, 'template/login.html', c)
-
+@login_required
 def point_list(request):
     points = EventPoint.objects.all()
     if not points:
@@ -22,8 +27,10 @@ def point_list(request):
     c = {
 
             }
-    return render(request, 'template/point_list.html', c)
+    return render(request, 'templates/point_list.html', c)
 
+
+@login_required
 def point_edit(request, id):
     if id:
         point = get_object_or_404(EventPoint, pk=id)
@@ -33,25 +40,19 @@ def point_edit(request, id):
     form = PointForm(request.POST or None, instance=point)
     
     if request.method == 'POST' and form.is_valid():
-        if label:
+        if id:
             form.save()
             messages.success(request, 'Point modified.')
-        else:
-            point = form.save()
-            point.by = user
-            point.save()
-            messages.success(request, 'Success !')
-
         return redirect('list-point')
 
     c = {
             'form': form,
             'point': point,
             }
-    return render(request, 'template/point_edit.html')
+    return render(request, 'templates/point_edit.html')
     
 
-
+@login_required
 def label_list(request):
     labels = Label.objects.all()
     if not labels:
@@ -62,9 +63,10 @@ def label_list(request):
             'labels': labels,
             }
 
-    return render(request, 'template/label_list.html', c)
+    return render(request, 'templates/label_list.html', c)
 
 
+@login_required
 def label_edit(request, name=None):
     if name:
         label = get_object_or_404(Label, name=name)
@@ -100,20 +102,20 @@ def label_edit(request, name=None):
             'form': form,
             'label': label,
             }
-    return render(request, 'template/label_edit.html', c)
+    return render(request, 'templates/label_edit.html', c)
 
 
-    def label_delete(request, name):
-        label = get_object_or_404(Label, id=id)
-        author = User.objects.get(username=request.user.username)
-        
-        for point in label.points.all():
-            point.label = None
-        label.remove()
+@login_required
+def label_delete(request, name):
+    label = get_object_or_404(Label, id=id)
+    author = User.objects.get(username=request.user.username)
 
-        messages.success(request, "Label deleted successfully.")
+    for point in label.points.all():
+        point.label = None
+    label.remove()
 
-        return redirect('list-label')
+    messages.success(request, "Label deleted successfully.")
+    return redirect('list-label')
 
 
 
