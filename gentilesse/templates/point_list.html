@@ -42,7 +42,20 @@
 <div class="panel panel-default">
   <div class="panel-heading">History</div>
   <div class="panel-body">
-    History content
+	  {% if points.count %}
+    <table class="table table-condensed">
+		{% for point in points %}
+		<tr>
+			<td>
+			<span class="glyphicon glyphicon-hand-right"></span>
+			<small>{{ point.by.username }} gave {{ point.points }} points to {{ point.to.username }} on {{ point.date }}.</small>
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+      {% else %}
+      No points given yet
+      {% endif %}
   </div>
 </div>
 

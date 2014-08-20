@@ -24,13 +24,14 @@ def point_add(request, username_to, label_id, amount):
 
 @login_required
 def point_list(request):
-    #points = EventPoint.objects.all()
+    points = EventPoint.objects.order_by('-date')[:5]
     users = User.objects.all()
     labels = Label.objects.all()
     
     c = {
             'users': users,
             'labels': labels,
+            'points': points,
             }
     return render(request, 'point_list.html', c)
 
