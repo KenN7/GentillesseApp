@@ -97,10 +97,6 @@ def label_edit(request, name=None):
             label.save()
             messages.success(request, 'Label added successfully.')
 
-        point = request.GET.get('point')
-        if point:
-            return redirect('add-label-to-point', point, label.name)
-
         return redirect('list-label')
         
     c = {
