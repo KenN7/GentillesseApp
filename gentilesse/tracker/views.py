@@ -11,8 +11,8 @@ import tracker.graph as flot
 @login_required
 def point_add(request, username_to, label_id, amount):
     user_by = User.objects.get(username=request.user)
-    user_to = User.objects.get_object_or_404(username=username_to)
-    label = Label.objects.get_object_or_404(name=label_id)
+    user_to = get_object_or_404(User, username=username_to)
+    label = get_object_or_404(Label, name=label_id)
     point = EventPoint.objects.create(by=user_by,to=user_to,label=label,points=int(amount))
 
     return redirect('list-points')
@@ -27,9 +27,10 @@ def point_list(request):
     #(date, points)
     for user in users:
         tuplist = []
-        for p in user.total_points_list():
-            tuplist.append((p.date, user.from_begin_points(p.date)))
-        gr.add_lines(tuplist)
+        if user.total_points():
+            for p in user.total_points_list():
+                tuplist.append((p.date, user.from_begin_points(p.date)))
+            gr.add_lines(tuplist)
 
     
     c = {
