@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
 from tracker.models import *
+from tracker.forms import * 
 import tracker.graph as flot
 
 # Create your views here.
@@ -93,7 +94,6 @@ def label_edit(request, name=None):
             messages.success(request, 'Label modified successfully.')
         else:
             label = form.save(commit=False)
-            label.project = project
             label.save()
             messages.success(request, 'Label added successfully.')
 
