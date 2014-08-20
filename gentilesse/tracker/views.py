@@ -87,21 +87,14 @@ def label_edit(request, name=None):
     form = LabelForm(request.POST or None, instance=label)
 
     if request.method == 'POST' and form.is_valid():
-        similar = Label.objects.filter(name=form.cleaned_data['name'])
-        
         if label:
-            similar = similar.exclude(pk=label.pk)
-        if similar.exists():
-            form._errors['name'] = ['There is already a label with this name.']
+            form.save()
+            messages.success(request, 'Label modified successfully.')
         else:
-            if label:
-                form.save()
-                messages.success(request, 'Label modified successfully.')
-            else:
-                label = form.save(commit=False)
-                label.project = project
-                label.save()
-                messages.success(request, 'Label added successfully.')
+            label = form.save(commit=False)
+            label.project = project
+            label.save()
+            messages.success(request, 'Label added successfully.')
 
         point = request.GET.get('point')
         if point:

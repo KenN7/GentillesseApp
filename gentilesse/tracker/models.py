@@ -30,7 +30,7 @@ class User(auth.models.User):
 
 
 class Label(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     color = fields.RGBColorField(default="#000000",verbose_name="Background color")
     inverted = models.BooleanField(default=True)
 
