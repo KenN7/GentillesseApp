@@ -63,9 +63,16 @@
 <div class="panel panel-default">
   <div class="panel-heading">Graphs</div>
   <div class="panel-body">
-    Graphical content
+    <div id="testgraph" style="display:block; height:300px; width:500px;"></div>
   </div>
 </div>
+{% endblock %}
 
 
+{% block js_end %}
+<script type="text/javascript">
+$(document).ready(function(){
+	$.plot($("#testgraph"), {{ graph.series_json }}, {{ graph.options_json }});
+	});
+</script>
 {% endblock %}

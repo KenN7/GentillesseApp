@@ -6,6 +6,7 @@ from django.contrib import messages
 import datetime as date
 from tracker.models import *
 import datetime
+import tracker.graph as flot
 
 # Create your views here.
 
@@ -28,8 +29,17 @@ def point_list(request):
     points = EventPoint.objects.order_by('-date')[:5]
     users = User.objects.all()
     labels = Label.objects.all()
+    gr = flot.Flot()
+    #(date, points)
+    for user in users:
+        tuplist = []
+        for p in user.total_points_list():
+            tuplist.append((p.date, user.from_begin_points(p.date)))
+        gr.add_lines(tuplist)
+
     
     c = {
+            'graph': gr,
             'users': users,
             'labels': labels,
             'points': points,
