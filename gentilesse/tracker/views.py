@@ -3,8 +3,9 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
-from datetime import date
+import datetime as date
 from tracker.models import *
+import datetime
 
 # Create your views here.
 
@@ -14,7 +15,7 @@ def point_add(request, username_to, label_id, amount):
         user_by = User.objects.get(username=request.user)
         user_to = User.objects.get(username=username_to)
         label = Label.objects.get(name=label_id)
-        point = EventPoint(by=user_by,to=user_to,label=label,date=date.today(),points=int(amount))
+        point = EventPoint(by=user_by,to=user_to,label=label,date=date.datetime.now(),points=int(amount))
         point.save()
     else:
         messages.error(request, 'Error adding points')

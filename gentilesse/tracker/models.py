@@ -34,7 +34,7 @@ class Label(models.Model):
     color = fields.RGBColorField(default="#000000",verbose_name="Background color")
 
     def total_label_points(self):
-        return sum(self.points.all())
+        return self.points.aggregate(Sum('points'))['points__sum']
 
     def label_points_list(self):
         return self.points.all()
@@ -47,7 +47,7 @@ class EventPoint(models.Model):
     by = models.ForeignKey(User, related_name='from')
     to = models.ForeignKey(User, related_name='points')
     label = models.ForeignKey(Label, blank=True, null=True, related_name='points')
-    date = models.DateField()
+    date = models.DateTimeField()
     points = models.IntegerField()
 
     def __str__(self):

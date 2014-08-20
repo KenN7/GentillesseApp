@@ -48,7 +48,7 @@
 		<tr>
 			<td>
 			<span class="glyphicon glyphicon-hand-right"></span>
-			<small>{{ point.by.username }} gave {{ point.points }} points to {{ point.to.username }} on {{ point.date }}.</small>
+			<small><b>{{ point.by.username }}</b> gave <b>{{ point.points }}</b> points to <b>{{ point.to.username }}</b> on {{ point.date }}. <span class="label label-default">{{ point.label.name }}</span></small>
 			</td>
 		</tr>
 		{% endfor %}
