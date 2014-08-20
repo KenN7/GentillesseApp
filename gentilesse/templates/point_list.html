@@ -15,7 +15,7 @@
     {% if labels.count %}
       {% for label in labels %}
         <div class="btn-group">
-          <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
+          <button type="button" class="btn btn-sm dropdown-toggle" style="{% label_style label %}" data-toggle="dropdown">
 	        {{ label.name }}
             <span class="caret"></span>
           </button>
@@ -48,7 +48,7 @@
 		<tr>
 			<td>
 			<span class="glyphicon glyphicon-hand-right"></span>
-			<small><b>{{ point.by.username }}</b> gave <b>{{ point.points }}</b> points to <b>{{ point.to.username }}</b> on {{ point.date }}. <span class="label label-default">{{ point.label.name }}</span></small>
+			<small><b>{{ point.by.username }}</b> gave <b>{{ point.points }}</b> points to <b>{{ point.to.username }}</b> on {{ point.date }}. <span class="label label-default" style="{% label_style label %}">{{ point.label.name }}</span></small>
 			</td>
 		</tr>
 		{% endfor %}
