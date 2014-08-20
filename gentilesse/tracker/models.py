@@ -32,7 +32,7 @@ class User(auth.models.User):
 class Label(models.Model):
     name = models.CharField(max_length=20)
     color = fields.RGBColorField(default="#000000",verbose_name="Background color")
-    inverted = models.BinaryField()
+    inverted = models.BooleanField(default=True)
 
     def total_label_points(self):
         return self.points.aggregate(Sum('points'))['points__sum']
