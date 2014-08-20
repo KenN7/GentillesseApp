@@ -10,7 +10,7 @@ import tracker.graph as flot
 
 @login_required
 def point_add(request, username_to, label_id, amount):
-    user_by = User.objects.get_object_or_404(username=request.user)
+    user_by = User.objects.get(username=request.user)
     user_to = User.objects.get_object_or_404(username=username_to)
     label = Label.objects.get_object_or_404(name=label_id)
     point = EventPoint.objects.create(by=user_by,to=user_to,label=label,points=int(amount))
