@@ -9,25 +9,30 @@ from tracker.models import *
 # Create your views here.
 
 @login_required
-def point_add(request, user_to, label, amount):
-    if user_to and amount:
+def point_add(request, username_to, label_id, amount):
+    if username_to and amount:
         user_by = User.objects.get(username=request.user)
+        user_to = User.objects.get(username=username_to)
+        label = Label.objects.get(name=label_id)
         point = EventPoint(by=user_by,to=user_to,label=label,date=date.today(),points=int(amount))
         point.save()
     else:
         messages.error(request, 'Error adding points')
 
+    return redirect('list-points')
+
 
 @login_required
 def point_list(request):
-    points = EventPoint.objects.all()
-    if not points:
-        messages.info(request, 'Add points first')
+    #points = EventPoint.objects.all()
+    users = User.objects.all()
+    labels = Label.objects.all()
     
     c = {
-
+            'users': users,
+            'labels': labels,
             }
-    return render(request, 'templates/point_list.html', c)
+    return render(request, 'point_list.html', c)
 
 
 @login_required
@@ -49,7 +54,7 @@ def point_edit(request, id):
             'form': form,
             'point': point,
             }
-    return render(request, 'templates/point_edit.html')
+    return render(request, 'point_edit.html')
     
 
 @login_required
@@ -63,7 +68,7 @@ def label_list(request):
             'labels': labels,
             }
 
-    return render(request, 'templates/label_list.html', c)
+    return render(request, 'label_list.html', c)
 
 
 @login_required
@@ -102,7 +107,7 @@ def label_edit(request, name=None):
             'form': form,
             'label': label,
             }
-    return render(request, 'templates/label_edit.html', c)
+    return render(request, 'label_edit.html', c)
 
 
 @login_required

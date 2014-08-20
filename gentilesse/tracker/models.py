@@ -2,6 +2,7 @@ from django.db import models
 from colorful import fields
 import datetime
 from django.contrib import auth
+from django.db.models import Sum
 
 # Create your models here.
 class User(auth.models.User):
@@ -10,13 +11,13 @@ class User(auth.models.User):
         proxy = True
 
     def total_points(self):
-        return sum(self.points.points.all())
+        return self.points.aggregate(Sum('points'))['points__sum']
 
     def daily_points(self, date):
-        return sum(self.points.filter(date=date).points.all())
+        return self.points.filter(date=date).aggregate(Sum('points'))['points__sum']
 
     def from_begin_points(self, date):
-        return sum(self.points.filter(date__lt=date).points.all())
+        return self.points.filter(date__lt=date).aggregate(Sum('points'))['points__sum']
 
     def total_points_list(self):
         return self.points.all()
@@ -50,5 +51,5 @@ class EventPoint(models.Model):
     points = models.IntegerField()
 
     def __str__(self):
-        return self.by
+        return '%s->%s:%s' % (self.by.username,self.to.username,self.points)
 

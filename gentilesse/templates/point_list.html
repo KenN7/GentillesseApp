@@ -4,12 +4,40 @@
 
 {% block content %}
 
-<div class="panel panel-default">
-  <div class="panel-heading">Add points</div>
-  <div class="panel-body">
-    Add points
+{% if users.count %}
+  {% for user in users %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+		<h2 class="panel-title">{{ user.username }}<span class="badge">{{ user.total_points }}</span></h3>
+	</div>
+    <div class="panel-body">
+	      
+    {% if labels.count %}
+      {% for label in labels %}
+        <div class="btn-group">
+          <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
+	        {{ label.name }}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+			{% for i in "xxxxx" %}
+            <li><a href="{% url 'add-points' user.username forloop.counter label.name %}">+{{ forloop.counter }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+      {% else %}
+      No labels yet !
+      {% endif %}
+    </div>
   </div>
-</div>
+  {% endfor %}
+  {% else %}
+  <div class="panel panel-default">
+    <div class="panel-heading">No users</div>
+  </div>
+  {% endif %}
+  
 
 <div class="panel panel-default">
   <div class="panel-heading">History</div>
@@ -25,18 +53,5 @@
   </div>
 </div>
 
-<div class="btn-group">
-  <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
-	 {{ resquest.label }}
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a href="#">+1</a></li>
-    <li><a href="#">+2</a></li>
-    <li><a href="#">+3</a></li>
-    <li><a href="#">+4</a></li>
-    <li><a href="#">+5</a></li>
-  </ul>
-</div>
 
 {% endblock %}
