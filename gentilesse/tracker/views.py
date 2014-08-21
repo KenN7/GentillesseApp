@@ -22,21 +22,26 @@ def point_add(request, username_to, label_id, amount):
 
 @login_required
 def point_list(request):
-    points = EventPoint.objects.order_by('-date')[:5]
+    points = EventPoint.objects.order_by('-date')[:12]
     users = User.objects.all()
     labels = Label.objects.all()
-    gr = flot.Flot()
+    gr = flot.OptionFlot()
+    gr2 = flot.OptionFlot()
     #(date, points)
     for user in users:
-        tuplist = []
+        grtup1 = []
+        grtup2 = []
         if user.total_points():
             for p in user.total_points_list():
-                tuplist.append((p.date, user.from_begin_points(p.date)))
-            gr.add_lines(tuplist)
+                grtup1.append((p.date, user.from_begin_points(p.date)))
+                grtup2.append((p.date, p.points))
+            gr.add_lines(grtup1, label=user.username)
+            gr2.add_lines(grtup2, label=user.username)
 
     
     c = {
-            'graph': gr,
+            'graph1': gr,
+            'graph2': gr2,
             'users': users,
             'labels': labels,
             'points': points,

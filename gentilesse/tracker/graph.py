@@ -34,7 +34,7 @@ def update(d, u):
 
     Credit: Alex Martelli
     """
-    for k, v in u.iteritems():
+    for k, v in u.items():
         if isinstance(v, collections.Mapping):
             r = update(d.get(k, {}), v)
             d[k] = r
@@ -199,3 +199,9 @@ class Flot(object):
             if w:
                 series['bars']['barWidth'] = w
         return series
+
+class OptionFlot(Flot):
+    options = {
+            'points': { 'show': 'true' },
+            'grid': { 'hoverable': 'true' },
+            }
