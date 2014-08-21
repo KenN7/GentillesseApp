@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404 
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 
 from tracker.models import *
@@ -107,11 +108,9 @@ def label_edit(request, name=None):
 
 
 @login_required
+@require_http_methods(["POST"])
 def label_delete(request, name):
     label = get_object_or_404(Label, name=name)
-    for point in label.points.all():
-        point.delete()
-
     label.delete()
 
     messages.success(request, "Label deleted successfully.")

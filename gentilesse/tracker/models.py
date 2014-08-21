@@ -47,7 +47,7 @@ class Label(models.Model):
 class EventPoint(models.Model):
     by = models.ForeignKey(User, related_name='from')
     to = models.ForeignKey(User, related_name='points')
-    label = models.ForeignKey(Label, blank=True, null=True, related_name='points')
+    label = models.ForeignKey(Label, related_name='points')
     date = models.DateTimeField(auto_now_add=True)
     points = models.IntegerField()
 
