@@ -108,12 +108,11 @@ def label_edit(request, name=None):
 
 @login_required
 def label_delete(request, name):
-    label = get_object_or_404(Label, id=id)
-    author = User.objects.get(username=request.user.username)
-
+    label = get_object_or_404(Label, name=name)
     for point in label.points.all():
-        point.label = None
-    label.remove()
+        point.delete()
+
+    label.delete()
 
     messages.success(request, "Label deleted successfully.")
     return redirect('list-label')
