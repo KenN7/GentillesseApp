@@ -1,8 +1,9 @@
 from django.db import models
-from colorful import fields
-import datetime
 from django.contrib import auth
 from django.db.models import Sum
+from django.core.validators import RegexValidator
+
+from colorful import fields
 
 # Create your models here.
 class User(auth.models.User):
@@ -30,7 +31,9 @@ class User(auth.models.User):
 
 
 class Label(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name_validator = RegexValidator(regex='^[A-Za-z0-9_-]+$',
+            message="Please enter only characters, number, underscores or hyphens.")
+    name = models.CharField(max_length=20, unique=True, validators=[name_validator])
     color = fields.RGBColorField(default="#000000",verbose_name="Background color")
     inverted = models.BooleanField(default=True)
 
