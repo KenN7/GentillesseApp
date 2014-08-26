@@ -18,7 +18,7 @@ class User(auth.models.User):
         return self.points.filter(date=date).aggregate(Sum('points'))['points__sum']
 
     def from_begin_points(self, date):
-        return self.points.filter(date__lt=date).aggregate(Sum('points'))['points__sum']
+        return self.points.filter(date__lte=date).aggregate(Sum('points'))['points__sum']
 
     def total_points_list(self):
         return self.points.all()
@@ -27,7 +27,7 @@ class User(auth.models.User):
         return self.points.filter(date=date).points.all()
 
     def from_begin_points_list(self, date):
-        return self.points.filter(date__lt=date).points.all()
+        return self.points.filter(date__lte=date).points.all()
 
 
 class Label(models.Model):
